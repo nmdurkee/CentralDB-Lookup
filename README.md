@@ -59,15 +59,53 @@ Results are merged and deduplicated by ConnectWise company ID.
 
 ## Installation
 
-> This extension is not published to the Edge Add-ons store. Install it in Developer Mode.
+Microsoft Edge
 
-1. Download and unzip the extension folder
-2. Open Edge and navigate to `edge://extensions`
-3. Enable **Developer mode** (toggle in the bottom-left)
-4. Click **Load unpacked**
-5. Select the unzipped `centraldb-fixed` folder
-6. The extension icon will appear in your toolbar
+This extension is not published to the Edge Add-ons store. Install it in Developer Mode.
 
+
+Download and unzip the extension folder
+Open Edge and navigate to edge://extensions
+Enable Developer mode (toggle in the bottom-left)
+Click Load unpacked
+Select the unzipped centraldb-fixed folder
+The extension icon will appear in your toolbar
+
+Firefox
+
+This extension is not published to the Firefox Add-ons store. Install it manually using an .xpi file.
+
+Standard Install (Signed XPI)
+
+Download the .xpi file
+Open Mozilla Firefox
+Drag and drop the .xpi file into the Firefox window — OR:
+
+Navigate to about:addons
+Click the ⚙️ gear icon
+Select Install Add-on From File
+Choose the .xpi file
+
+
+Click Add when prompted for permissions
+
+Developer Install (Unsigned XPI)
+If the extension is unsigned, Firefox will block installation on stable builds.
+Option 1 — Temporary Load
+
+Open Firefox and navigate to about:debugging
+Click This Firefox
+Click Load Temporary Add-on
+Select the .xpi file
+
+
+Note: Temporary add-ons are removed when Firefox is closed. For a permanent install, the extension must be signed.
+
+Option 2 — Disable Signature Enforcement (Firefox Developer Edition / Nightly only)
+
+Navigate to about:config
+Set xpinstall.signatures.required to false
+Install the .xpi normally via about:addons
 ---
 
 ## Usage
