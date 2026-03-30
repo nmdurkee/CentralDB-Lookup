@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>CentralDB Lookup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f1117; color: #e2e8f0; width: 340px; padding: 16px; font-size: 12px; }
+    .header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #1e2533; }
+    .logo { width: 32px; height: 32px; flex-shrink: 0; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; color: white; }
+    .title { font-size: 14px; font-weight: 700; color: #f1f5f9; }
+    .subtitle { font-size: 11px; color: #4b5563; margin-top: 1px; }
+    .token-bar { display: flex; align-items: center; justify-content: space-between; background: #1a1f2e; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
+    .token-left { display: flex; align-items: center; gap: 7px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; flex-shrink: 0; }
+    .dot.green { background: #22c55e; }
+    .dot.yellow { background: #f59e0b; }
+    .token-label { color: #94a3b8; font-size: 11px; }
+    .token-time { color: #4b5563; font-size: 10px; }
+    .tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+    .tab { flex: 1; background: #1a1f2e; border: none; border-radius: 6px; padding: 7px; font-size: 11px; color: #64748b; cursor: pointer; font-weight: 600; }
+    .tab.active { background: #3b82f6; color: white; }
+    .tab:hover:not(.active) { background: #2d3748; color: #94a3b8; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .btn { width: 100%; border: none; border-radius: 8px; padding: 9px; font-size: 12px; font-weight: 600; cursor: pointer; margin-bottom: 8px; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.88; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; }
+    .btn-green { background: linear-gradient(135deg, #22c55e, #15803d); color: white; }
+    .btn-red { background: #1a1f2e; color: #ef4444; border: 1px solid #2d3748; }
+    .divider { text-align: center; color: #2d3748; font-size: 11px; margin: 8px 0; border-top: 1px solid #1e2533; padding-top: 8px; }
+    textarea { width: 100%; background: #1a1f2e; border: 1px solid #2d3748; border-radius: 6px; color: #e2e8f0; font-size: 10px; font-family: monospace; padding: 8px; resize: none; height: 60px; outline: none; }
+    textarea:focus { border-color: #3b82f6; }
+    textarea::placeholder { color: #374151; }
+    .info-box { background: #1a1f2e; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+    .info-box .lbl { font-size: 10px; color: #4b5563; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px; }
+    .info-box .val { font-size: 13px; font-weight: 700; color: #f1f5f9; }
+    .info-box .sub { font-size: 11px; color: #64748b; margin-top: 2px; }
+    .result-card { background: #1a1f2e; border-radius: 8px; padding: 11px 12px; margin-top: 8px; border-left: 3px solid #3b82f6; }
+    .result-card .cname { font-size: 14px; font-weight: 700; color: #f1f5f9; margin-bottom: 5px; }
+    .result-card .row { font-size: 11px; color: #4b5563; margin-top: 3px; }
+    .result-card .row span { color: #94a3b8; }
+    .status-open { color: #22c55e !important; font-weight: 700; }
+    .status-other { color: #f59e0b !important; }
+    .msg { border-radius: 8px; padding: 10px 12px; font-size: 11px; margin-bottom: 8px; text-align: center; line-height: 1.6; }
+    .msg-info { background: #1a1f2e; color: #64748b; }
+    .msg-success { background: #14532d22; color: #22c55e; border: 1px solid #14532d; }
+    .msg-error { background: #450a0a22; color: #ef4444; border: 1px solid #450a0a; }
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #2d3748; border-top-color: #3b82f6; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 5px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">CDB</div>
+    <div>
+      <div class="title">CentralDB Lookup</div>
+      <div class="subtitle" id="subtitle">Loading...</div>
+    </div>
+  </div>
+  <div class="token-bar">
+    <div class="token-left">
+      <div class="dot" id="tok-dot"></div>
+      <span class="token-label" id="tok-label">No token</span>
+    </div>
+    <span class="token-time" id="tok-time"></span>
+  </div>
+  <div class="tabs">
+    <button class="tab active" id="tab-search" onclick="switchTab('search')">🔍 Search</button>
+    <button class="tab" id="tab-token" onclick="switchTab('token')">🔑 Token</button>
+  </div>
+
+  <div class="panel active" id="panel-search">
+    <div id="search-content"></div>
+  </div>
+
+  <div class="panel" id="panel-token">
+    <button class="btn btn-green" id="btn-grab-token">⚡ Auto-Grab Token from CentralDB</button>
+    <div id="token-msg"></div>
+    <div class="divider">or paste manually</div>
+    <textarea id="token-input" placeholder="eyJ0eXAiOiJKV1Qi..."></textarea>
+    <button class="btn btn-blue" id="btn-save-token">💾 Save Pasted Token</button>
+    <button class="btn btn-red" id="btn-clear-token">✕ Clear Token</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

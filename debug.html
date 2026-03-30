@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CentralDB Debug</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0f1117; color: #e2e8f0;
+      width: 420px; padding: 14px; font-size: 11px;
+    }
+    h2 { font-size: 13px; color: #3b82f6; margin-bottom: 10px; }
+    .section { background: #1a1f2e; border-radius: 6px; padding: 10px; margin-bottom: 8px; }
+    .section h3 { font-size: 11px; color: #64748b; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.05em; }
+    .row { margin: 3px 0; line-height: 1.5; word-break: break-all; }
+    .ok { color: #22c55e; }
+    .fail { color: #ef4444; }
+    .warn { color: #f59e0b; }
+    .val { color: #94a3b8; }
+    .btn {
+      width: 100%; background: #3b82f6; color: white;
+      border: none; border-radius: 6px; padding: 8px;
+      font-size: 12px; cursor: pointer; margin-bottom: 8px;
+      font-family: inherit;
+    }
+    .btn:hover { background: #2563eb; }
+    #log { white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h2>🔍 CentralDB Debug</h2>
+  <button class="btn" id="btn-run">▶ Run Full Diagnostic</button>
+  <div id="output"></div>
+  <script src="debug.js"></script>
+</body>
+</html>
