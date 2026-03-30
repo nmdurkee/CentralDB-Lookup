@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "CentralDB Lookup",
+  "version": "3.0",
+  "description": "Auto-grabs your token from CentralDB and looks up companies from the Stratus portal.",
+  "permissions": ["activeTab", "storage", "scripting"],
+  "content_scripts": [
+    {
+      "matches": ["https://centraldb.spectrumvoip.com/*"],
+      "js": ["bridge.js", "content-centraldb.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "https://centraldb.spectrumvoip.com/*",
+    "https://stratus.spectrumvoip.com/*",
+    "https://st1-web3-cl4.spectrumvoip.com/*",
+    "https://st1-web4-cl4.spectrumvoip.com/*",
+    "https://st1-web5-lax.spectrumvoip.com/*",
+    "https://st1-web6-dal.spectrumvoip.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
